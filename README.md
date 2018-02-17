@@ -10,6 +10,7 @@
 (Setup Guide)
 
 ### Who?
+The project team consists of:
 + Nedim Azgari
 + Duran Serkan Kılıç
 + Hüseyin Kılıç
