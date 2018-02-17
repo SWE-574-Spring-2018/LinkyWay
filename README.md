@@ -1,18 +1,20 @@
-## **Boğaziçi University Software Engineering Department** 
+## **WikiLinks** 
 
-### Project Title: 
-  WikiLinks
+### What?:
+ This repository contains applications, documentation and implementation information of Software Development as a Team term Project. You can access Wiki page for detailed information from [here](https://github.com/SWE-574-Spring-2018/Spring2018-SWE574/wiki)
 
-### Project Info:
-  This repository contains applications, documentation and implementation information of Software Development as a Team term Project. You can access Wiki page for detailed information from [here](https://github.com/SWE-574-Spring-2018/Spring2018-SWE574/wiki)
+### Why?
 
-### Project Contributors:
-+ Nedim AZGARi
-+ Duran Serkan KILIÇ
-+ Hüseyin KILIÇ
-+ Ahmet Can ERSÖZ
-+ Salih DEMİR
+### How?
+(Setup Guide)
 
-### Product Info:
+### Who:
++ Nedim Azgari
++ Duran Serkan Kılıç
++ Hüseyin Kılıç
++ Ahmet Can Ersöz
++ Salih Demir
 
+### Primary Features:
 
+(Features)
