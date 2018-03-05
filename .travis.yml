@@ -1,0 +1,16 @@
+language: java
+jdk:
+- openjdk8
+
+services:
+- postgresql
+
+before_install:
+  - psql -c 'create database linkyway;' -U postgres
+
+install:
+- echo "Build started"
+- mvn clean install
+
+after_script:
+- echo "Build completed"
