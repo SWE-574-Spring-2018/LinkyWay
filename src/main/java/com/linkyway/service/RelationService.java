@@ -1,6 +1,3 @@
-/*
- * © 2016 Copyright Amadeus Unauthorised use and disclosure strictly forbidden.
- */
 package com.linkyway.service;
 
 import com.linkyway.domain.RelationType;
