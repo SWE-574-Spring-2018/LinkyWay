@@ -1,24 +1,23 @@
 package com.linkyway.entity;
 
 import lombok.Data;
+import org.neo4j.ogm.annotation.GraphId;
+import org.neo4j.ogm.annotation.NodeEntity;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * @author huseyin.kilic
  */
 @Data
-@Entity
-@Table(name = "Node")
-public class NodeEntity extends AbstractEntity {
+@NodeEntity
+public class Node extends AbstractEntity {
 
-  @Id
+  @GraphId
   @GeneratedValue
-  private long id;
+  private Long id;
   private String name;
+  private String type;
   private String description;
 
 }

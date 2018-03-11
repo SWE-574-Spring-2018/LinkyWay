@@ -1,7 +1,6 @@
 package com.linkyway.mapper;
 
-import com.linkyway.domain.Node;
-import com.linkyway.entity.NodeEntity;
+import com.linkyway.entity.Node;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,18 +9,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class NodeEntityMapper {
 
-  public NodeEntity convert(Node node) {
-    NodeEntity entity = new NodeEntity();
-    entity.setName(node.getName());
-    entity.setDescription(node.getDescription());
-    return entity;
+  public Node convert(com.linkyway.domain.Node domainObj) {
+    Node entityObj = new Node();
+    //entityObj.setId(domainObj.getId());
+    entityObj.setName(domainObj.getName());
+    entityObj.setDescription(domainObj.getDescription());
+    entityObj.setType(domainObj.getType());
+    return entityObj;
   }
 
-  public Node convert(NodeEntity entity) {
-    Node node = new Node();
-    node.setId(entity.getId());
-    node.setName(entity.getName());
-    node.setDescription(entity.getDescription());
-    return node;
+  public com.linkyway.domain.Node convert(Node entityObj) {
+    com.linkyway.domain.Node domainObj = new com.linkyway.domain.Node();
+    domainObj.setId(entityObj.getId());
+    domainObj.setName(entityObj.getName());
+    domainObj.setDescription(entityObj.getDescription());
+    domainObj.setType(entityObj.getType());
+    return domainObj;
   }
 }
