@@ -1,0 +1,123 @@
+﻿@font-face {
+    font-family: 'SaturaTextPro';
+    src: url('../fonts/SaturaTextPro.ttf');
+}
+
+@keyframes fadeEffect {
+    from {
+        color: white;
+        background-color: #07005F;
+    }
+
+    to {
+        color: #999999;
+        background-color: white;
+    }
+}
+
+@-moz-keyframes fadeEffect {
+    from {
+        color: white;
+        background-color: #07005F;
+    }
+
+    to {
+        color: #999999;
+        background-color: white;
+    }
+}
+
+@-webkit-keyframes fadeEffect {
+    from {
+        color: white;
+        background-color: #07005F;
+    }
+
+    to {
+        color: #999999;
+        background-color: white;
+    }
+}
+
+body {
+    font: 16px "SaturaTextPro";
+}
+
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-top: 194px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.navbar {
+    padding: 10px;
+}
+
+.navbar-nav {
+    padding-top: 10px;
+}
+
+    .navbar-nav > li > a {
+        border-radius: 4px;
+    }
+
+        .navbar-nav > li > a:hover {
+            -moz-animation: fadeEffect 0.2s ease forwards reverse;
+            -o-animation: fadeEffect 0.2s ease forwards reverse;
+            -webkit-animation: fadeEffect 0.2s ease forwards reverse;
+            animation: fadeEffect 0.2s ease forwards reverse;
+        }
+
+.panel-primary .panel-title{
+    font-weight: bold;
+}
+
+.carousel {
+    height: 425px;
+    max-height: 425px;
+}
+
+    .carousel img {
+        width: 100%;
+        min-height: 425px;
+        max-height: 425px;
+    }
+
+#logo_container {
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    align-items: center;
+    -webkit-align-items: center; /* Safari 7.0+ */
+}
+
+#logo_extension {
+    color:#003366;
+    margin-left:10px;
+}
+
+#logo {
+    height: 100px;
+    width: 100px;
+    background-image: url('../img/logo.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: left center;
+}
+
+#map {
+    height: 425px;
+}

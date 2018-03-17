@@ -1,0 +1,2 @@
+http://annotorious.github.io/
+http://annotatorjs.org/

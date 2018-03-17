@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<div class="col-xs-6">
+    <div id="map"></div>
+</div>
+<div class="col-xs-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title"><b>LinkyWay Development Team</b><span class="glyphicon glyphicon-map-marker"></span>
+            </div>
+        </div>
+        <div class="panel-body">
+            Boğaziçi University, Bebek
+            <br/>
+            34342 İstanbul, Turkey
+            <br/>
+            <br/>
+            Tel: +90 (212) 359 67 99
+            <br/>
+            Faks: +90 (212) 263 67 99
+            <br/>
+        </div>
+    </div>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzx29rnmyohT_hqubClZKTZx-5KBEXFkU&callback=initMap"
+        async defer></script>
+<script>
+            function initMap() {
+                var myLatLng = { lat: 41.086783, lng: 29.044366 };
+
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 16,
+                    center: myLatLng
+                });
+
+                var marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    title: 'Eğitim Fakültesi'
+                });
+            }
+
+
+
+</script>
