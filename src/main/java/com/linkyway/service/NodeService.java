@@ -1,11 +1,11 @@
 package com.linkyway.service;
 
-import com.linkyway.Dao.BaseDao;
-import com.linkyway.domain.Node;
-import com.linkyway.entity.NodeEntity;
+import com.linkyway.entity.Node;
+import com.linkyway.exception.NoMatchingNodeFoundException;
+import com.linkyway.exception.NodeAlreadyExistsException;
 import com.linkyway.mapper.NodeEntityMapper;
+import com.linkyway.repository.NodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,19 +13,36 @@ import org.springframework.transaction.annotation.Transactional;
  * @author huseyin.kilic
  */
 @Service
+@Transactional
 public class NodeService {
 
   @Autowired
   private NodeEntityMapper entityMapper;
 
   @Autowired
-  @Qualifier("node")
-  private BaseDao<NodeEntity> dao;
+  private NodeRepository nodeRepository;
 
-  @Transactional
-  public Node createNode(String name, String description) {
-    Node node = new Node(name, description);
-    NodeEntity entity = entityMapper.convert(node);
-    return entityMapper.convert(dao.persist(entity));
+
+  public com.linkyway.domain.Node getNodeByTypeAndName(String type, String name) throws NoMatchingNodeFoundException {
+    Node foundNode = nodeRepository.findByTypeAndName(type, name);
+    if (foundNode == null) {
+      throw new NoMatchingNodeFoundException(type, name);
+    }
+    return entityMapper.convert(foundNode);
   }
+
+  public com.linkyway.domain.Node createNode(com.linkyway.domain.Node node) throws NodeAlreadyExistsException {
+    Node existingNode = nodeRepository.findByTypeAndName(node.getType(), node.getName());
+    if (existingNode != null) {
+      throw new NodeAlreadyExistsException(existingNode.getId());
+    }
+
+    Node entity = entityMapper.convert(node);
+    return entityMapper.convert(nodeRepository.create(entity));
+  }
+
+  public void deleteNode(Long id) {
+    nodeRepository.delete(id);
+  }
+
 }

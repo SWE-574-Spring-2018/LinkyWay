@@ -1,11 +1,9 @@
 package com.linkyway.domain;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * @author huseyin.kilic
@@ -22,11 +20,13 @@ public class Node {
   @NotNull
   private String description;
 
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private List<Relation> relations;
+  @NotNull
+  private String type;
 
-  public Node(String name, String description) {
+  public Node(String type, String name, String description) {
+    this.type = type;
     this.name = name;
     this.description = description;
   }
+
 }
