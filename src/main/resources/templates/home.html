@@ -1,0 +1,6 @@
+<div>
+    <p th:text="'Hello, ' + ${twitterProfile.screenName} + '!'"/>
+</div>
+<div th:each="node : ${nodes}">
+   <p th:text="${node.name}"></p>
+</div>

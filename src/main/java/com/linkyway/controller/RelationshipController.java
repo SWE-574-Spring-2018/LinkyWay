@@ -22,7 +22,7 @@ import java.util.List;
  * @author huseyin.kilic
  */
 @Controller
-@RequestMapping("/linkyway/relation")
+@RequestMapping("/linkyway/api/relation")
 public class RelationshipController {
 
   @Autowired

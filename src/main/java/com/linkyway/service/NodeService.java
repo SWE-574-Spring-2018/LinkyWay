@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author huseyin.kilic
  */
@@ -29,6 +31,11 @@ public class NodeService {
       throw new NoMatchingNodeFoundException(type, name);
     }
     return entityMapper.convert(foundNode);
+  }
+
+  public List<com.linkyway.domain.Node> getAllNodes() {
+    List<Node> nodes = nodeRepository.retrieveAll();
+    return entityMapper.convert(nodes);
   }
 
   public com.linkyway.domain.Node createNode(com.linkyway.domain.Node node) throws NodeAlreadyExistsException {

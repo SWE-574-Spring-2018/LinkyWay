@@ -3,6 +3,9 @@ package com.linkyway.mapper;
 import com.linkyway.entity.Node;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author huseyin.kilic
  */
@@ -25,5 +28,13 @@ public class NodeEntityMapper {
     domainObj.setDescription(entityObj.getDescription());
     domainObj.setType(entityObj.getType());
     return domainObj;
+  }
+
+  public List<com.linkyway.domain.Node> convert(List<Node> nodes) {
+    List<com.linkyway.domain.Node> domainObjList = new ArrayList<>();
+    for (Node entityObj : nodes) {
+      domainObjList.add(convert(entityObj));
+    }
+    return domainObjList;
   }
 }
