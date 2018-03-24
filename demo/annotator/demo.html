@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script>
+      $(document).ready(function() {
+        var sourceElement = $("#d_source>*");
+        var annotateElement = $("#d_target");
+
+        sourceElement.click(function(e) {
+          e.preventDefault();
+        });
+
+        sourceElement.click(function(e) {
+          var clickedElement = $(e.target);
+          var innerText = clickedElement.text();
+
+          annotateElement.empty();
+          if (clickedElement.is("img"))
+            clickedElement.clone().appendTo(annotateElement);
+          else
+            annotateElement.append(innerText);
+        });
+
+        sourceElement.hover(function(e) {
+            $(e.target).css({
+              "outline": "1px solid black"
+            });
+          },
+          function(e) {
+            $(e.target).css({
+              "outline": "none"
+            });
+          }
+        );
+
+        annotateElement.click(function(e) {
+          alert(window.getSelection().toString());
+        });
+
+        function isEmpty(str) {
+          return (!str || 0 === str.length);
+        }
+      });
+
+    </script>
+  </head>
+
+  <style>
+    .column {
+      float: left;
+      width: 50%;
+    }
+
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+  </style>
+
+  <body>
+    <div class="row">
+      <div class="column" id="d_source">
+        <!DOCTYPE html>
+        <html>
+
+        <body>
+          <h1>Annotations are the Best!</h1>
+          <p>I love annotating everything that comes my way. I am just like that! </p>
+          <img src="https://www.cmpe.boun.edu.tr/~uskudarli/wa/puppies.jpg" alt="black and white puppies" style="width:500px;height:420px;">
+        </body>
+
+        </html>
+      </div>
+      <div class="column" id="d_target" />
+    </div>
+  </body>
+
+</html>
