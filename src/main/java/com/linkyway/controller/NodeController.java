@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
  * @author huseyin.kilic
  */
 @Controller
-@RequestMapping("/linkyway/node")
+@RequestMapping("/linkyway/api/node")
 public class NodeController {
 
   @Autowired

@@ -7,7 +7,9 @@ import org.neo4j.ogm.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,6 +48,23 @@ public class NodeRepository {
     foundNode.setDescription(String.valueOf(nodeModel.getPropertyList().get(1).getValue()));
     foundNode.setType(nodeModel.getLabels()[0]);
     return foundNode;
+  }
+
+  public List<Node> retrieveAll() {
+    List<Node> nodes = new ArrayList<>();
+    String query = "MATCH (node) return node";
+    Iterable<Map<String, Object>> resultList = session.query(query, new HashMap<>()).queryResults();
+
+    for (Object result : resultList) {
+      NodeModel nodeModel = (NodeModel)(((HashMap)result).get("node"));
+      Node nextNode = new Node();
+      nextNode.setId(nodeModel.getId());
+      nextNode.setName(String.valueOf(nodeModel.getPropertyList().get(0).getValue()));
+      nextNode.setDescription(String.valueOf(nodeModel.getPropertyList().get(1).getValue()));
+      nextNode.setType(nodeModel.getLabels()[0]);
+      nodes.add(nextNode);
+    }
+    return nodes;
   }
 
   public void delete(Long id) {
