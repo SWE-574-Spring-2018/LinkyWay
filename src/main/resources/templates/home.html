@@ -1,6 +1,97 @@
+﻿<!DOCTYPE html>
 <div>
-    <p th:text="'Hello, ' + ${twitterProfile.screenName} + '!'"/>
+    <p th:text="'Hello, ' + ${twitterdiv>ile.screenName} + '!'"/>
 </div>
 <div th:each="node : ${nodes}">
-   <p th:text="${node.name}"></p>
+    <p th:text="${node.name}"></p>
+</div>
+<div class="col-md-8">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <img src="../static/img/banner/annotation_book_1.jpg">
+                <div class="carousel-caption">
+                    <h3><span
+                            class="label label-default">Try the web with annotations</span>
+                    </h3>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="../static/img/banner/annotation_book_2.jpg">
+                <div class="carousel-caption">
+                    <h3><span class="label label-default">Annotate with style</span>
+                    </h3>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="../static/img/banner/annotation_book_3.jpg">
+                <div class="carousel-caption">
+                    <h3><span class="label label-default">You view of annotations will never be the same.</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Back</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button"
+           data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Forward</span>
+        </a>
+    </div>
+</div>
+<div class="col-md-4 ">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">Annotations <span
+                    class="glyphicon glyphicon-list-alt"></span></div>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <h4><span class="label label-default">System</span></h4>
+                <p class="list-group-item-text">Database maintenance between 8:00 p.m. and 10:00
+                    p.m.</p>
+            </li>
+            <li class="list-group-item">
+                <h4><span class="label label-warning">News</span></h4>
+                <p class="list-group-item-text">LinkyWay won the Annotation Award 2018!</p>
+            </li>
+        </ul>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">Quick Links <span
+                    class="glyphicon glyphicon-link"></span></div>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a href="https://github.com/SWE-574-Spring-2018/LinkyWay/" target="_blank">
+                    <div class="list-group-item-heading">LinkyWay Github<span
+                            class="pull-right glyphicon glyphicon glyphicon-chevron-right"></span>
+                    </div>
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="mailto:community@linkyway.com" target="_blank">
+                    <div class="list-group-item-heading">Contact Us<span
+                            class="pull-right glyphicon glyphicon glyphicon-chevron-right"></span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>
