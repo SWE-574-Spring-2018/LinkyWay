@@ -22,7 +22,7 @@ import javax.servlet.ServletContext;
 @EnableNeo4jRepositories
 @EnableWebMvc
 public class LinkywayApplication extends SpringBootServletInitializer {
-    private final static String[] CLASSPATH_RESOURCE_LOCATIONS = {
+    private final static String[] RESOURCE_LOCATIONS = {
             "classpath:/resources/",
             "classpath:/static/"
     };
@@ -37,7 +37,7 @@ public class LinkywayApplication extends SpringBootServletInitializer {
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 registry.addResourceHandler("/**")
-                        .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
+                        .addResourceLocations(RESOURCE_LOCATIONS);
             }
         };
     }

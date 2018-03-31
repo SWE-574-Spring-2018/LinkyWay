@@ -1,6 +1,12 @@
 ﻿<!DOCTYPE html>
-
 <div class="col-md-8">
+    <div>
+        <p th:text="'Hello, ' + ${twitterdiv>ile.screenName} + '!'"/>
+    </div>
+    <div th:each="node : ${nodes}">
+        <p th:text="${node.name}"></p>
+    </div>
+
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
