@@ -18,7 +18,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/home")
 public class HomeController extends BaseController {
-
   @Autowired
   private NodeService nodeService;
 
@@ -29,5 +28,4 @@ public class HomeController extends BaseController {
     model.addAttribute("nodes", nodes);
     return "home";
   }
-
 }
