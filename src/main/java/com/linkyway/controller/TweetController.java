@@ -20,6 +20,11 @@ import javax.validation.constraints.NotNull;
 import java.sql.Connection;
 import java.util.List;
 
+
+/**
+ * @author acersoz
+ */
+
 @Controller
 @RequestMapping("/linkyway/api/tweet")
 public class TweetController {
