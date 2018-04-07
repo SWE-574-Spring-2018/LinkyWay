@@ -40,7 +40,7 @@ public class TweetController {
     public ResponseEntity searchTweet(@NotNull String url)
             throws org.springframework.social.ApiException {
 
-        SearchResults searchResults = tweetService.searchTweets(url);
-        return ResponseEntity.status(HttpStatus.OK).body(searchResults);
+        Tweet searchResult = tweetService.searchTweets(url);
+        return ResponseEntity.status(HttpStatus.OK).body(searchResult);
     }
 }
