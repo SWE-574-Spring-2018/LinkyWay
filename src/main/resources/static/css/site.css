@@ -71,18 +71,18 @@ textarea {
     padding-top: 10px;
 }
 
-    .navbar-nav > li > a {
-        border-radius: 4px;
-    }
+.navbar-nav > li > a {
+    border-radius: 4px;
+}
 
-        .navbar-nav > li > a:hover {
-            -moz-animation: fadeEffect 0.2s ease forwards reverse;
-            -o-animation: fadeEffect 0.2s ease forwards reverse;
-            -webkit-animation: fadeEffect 0.2s ease forwards reverse;
-            animation: fadeEffect 0.2s ease forwards reverse;
-        }
+.navbar-nav > li > a:hover {
+    -moz-animation: fadeEffect 0.2s ease forwards reverse;
+    -o-animation: fadeEffect 0.2s ease forwards reverse;
+    -webkit-animation: fadeEffect 0.2s ease forwards reverse;
+    animation: fadeEffect 0.2s ease forwards reverse;
+}
 
-.panel-primary .panel-title{
+.panel-primary .panel-title {
     font-weight: bold;
 }
 
@@ -91,11 +91,11 @@ textarea {
     max-height: 425px;
 }
 
-    .carousel img {
-        width: 100%;
-        min-height: 425px;
-        max-height: 425px;
-    }
+.carousel img {
+    width: 100%;
+    min-height: 425px;
+    max-height: 425px;
+}
 
 #logo_container {
     display: flex;
@@ -105,8 +105,8 @@ textarea {
 }
 
 #logo_extension {
-    color:#003366;
-    margin-left:10px;
+    color: #003366;
+    margin-left: 10px;
 }
 
 #logo {

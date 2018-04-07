@@ -3,8 +3,8 @@
  */
 package com.linkyway.mapper;
 
-import com.linkyway.domain.UserProfile;
-import com.linkyway.entity.User;
+import com.linkyway.model.domain.UserProfile;
+import com.linkyway.model.entity.User;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,20 +14,20 @@ import org.springframework.stereotype.Component;
 public class ProfileEntityMapper {
 
 
-  public UserProfile convert(User entity) {
-    return UserProfile.builder()
-            .id(entity.getId())
-            .twitterId(entity.getTwitterId())
-            .name(entity.getName())
-            .build();
-  }
+    public UserProfile convert(User entity) {
+        return UserProfile.builder()
+                .id(entity.getId())
+                .twitterId(entity.getTwitterId())
+                .name(entity.getName())
+                .build();
+    }
 
-  public User convert(UserProfile dto) {
-    return User.builder()
-            .id(dto.getId())
-            .twitterId(dto.getTwitterId())
-            .name(dto.getName())
-            .build();
-  }
+    public User convert(UserProfile dto) {
+        return User.builder()
+                .id(dto.getId())
+                .twitterId(dto.getTwitterId())
+                .name(dto.getName())
+                .build();
+    }
 
 }
