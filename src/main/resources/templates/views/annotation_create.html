@@ -8,7 +8,7 @@
                 alterTweetContent("")
 
             $("#d_alert_content").show().html(err.message);
-            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $("html, body").animate({scrollTop: 0}, "slow");
         }
 
         function alterTweetContent(html) {
@@ -55,21 +55,29 @@
         }
 
         function submitAnnotation() {
-            var annotationText = window.getSelection().toString();
-            var tweetText = currentTweet.text;
-            var contains = tweetText.includes(annotationText);
-            if (contains) {
-                var startIndex = tweetText.indexOf(annotationText);
-                var endIndex = startIndex + annotationText.length;
+            var annotationText = $("#i_annotation_text").val();
+            if (annotationText.length === 0) {
+                handleError(new Error("Enter annotation text!"), false);
+                return;
+            }
 
-                if (startIndex === endIndex) {
-                    handleError(new Error("Selection is not valid for annotation!"), false);
-                    return;
-                }
+            var annotationSelection = window.getSelection().toString();
+            var tweetText = currentTweet.text;
+            var contains = tweetText.includes(annotationSelection);
+            if (contains) {
+                var annotationType;
+
+                var startIndex = tweetText.indexOf(annotationSelection);
+                var endIndex = startIndex + annotationSelection.length;
+
+                if (startIndex === endIndex)
+                    annotationType = "all";
+                else
+                    annotationType = " text";
 
                 var annotation = {
                     "id": currentTweet.id,
-                    "type": "text",
+                    "type": annotationType,
                     "startIndex": startIndex,
                     "endIndex": endIndex
                 }
@@ -101,8 +109,7 @@
         $(document).ready(function () {
             $("#d_alert_content").hide();
             $("#b_get_tweet").click(function (e) {
-                var inputTextElement = $("#i_tweet_url");
-                var tweetUrl = inputTextElement.val();
+                var tweetUrl = $("#i_tweet_url").val();
                 if (isEmpty(tweetUrl))
                     handleError(new Error("Enter valid tweet URL!"), false);
                 else {
@@ -118,13 +125,11 @@
     </script>
 
     <div class="row">
-        <div>
-            <div class="input-group">
-                <input id="i_tweet_url" type="text" class="form-control" placeholder="Enter Tweet url...">
-                <span class="input-group-btn">
+        <div class="input-group">
+            <input id="i_tweet_url" type="text" class="form-control" placeholder="Enter Tweet url...">
+            <span class="input-group-btn">
                     <button id="b_get_tweet" class="btn btn-default" type="button">Go!</button>
-                </span>
-            </div>
+            </span>
         </div>
     </div>
 
@@ -132,13 +137,18 @@
         <div id="d_alert_content" class="row alert alert-danger" role="alert"></div>
 
         <div class="row">
-            <div id="d_source" class="center" style="min-height: 300px"></div>
+            <div id="d_source" class="center" style="min-height: 300px">
+                <img style="width: 100px" src="../../img/twitter_logo.png">
+            </div>
         </div>
 
-        <div class="row center">
-            <button id="b_submit_annotation" class="btn btn-default" type="button" style="margin-top: 10px;">
-                Submit annotation
-            </button>
+        <div class="row">
+            <div class="input-group">
+                <input id="i_annotation_text" type="text" class="form-control" placeholder="Enter annotation text...">
+                <span class="input-group-btn">
+                    <button id="b_submit_annotation" class="btn btn-default" type="button">Submit Annotation</button>
+            </span>
+            </div>
         </div>
     </div>
 </div>
