@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<div xmlns:th="http://www.thymeleaf.org" class="col-md-8" th:fragment="annotation_create">
+    <script>
+        $(document).ready(function () {
+            var sourceElement = $("#d_source>*");
+            var annotateElement = $("#d_target");
+
+            sourceElement.click(function (e) {
+                e.preventDefault();
+            });
+
+            sourceElement.click(function (e) {
+                var clickedElement = $(e.target);
+                var innerText = clickedElement.text();
+
+                annotateElement.empty();
+                if (clickedElement.is("img"))
+                    clickedElement.clone().appendTo(annotateElement);
+                else
+                    annotateElement.append(innerText);
+            });
+
+            sourceElement.hover(function (e) {
+                    $(e.target).css({
+                        "outline": "1px solid black"
+                    });
+                },
+                function (e) {
+                    $(e.target).css({
+                        "outline": "none"
+                    });
+                }
+            );
+
+            annotateElement.click(function (e) {
+                alert(window.getSelection().toString());
+            });
+
+            function isEmpty(str) {
+                return (!str || 0 === str.length);
+            }
+        });
+    </script>
+
+    <div id="d_source">
+        <h1>Annotations are the Best!</h1>
+        <p>I love annotating everything that comes my way. I am just like that! </p>
+        <img src="http://www.justpuppies.net/images/pom_triple_0815.jpg" alt="puppies"
+             style="width:500px;height:420px;">
+    </div>
+    <div id="d_target"></div>
+</div>
