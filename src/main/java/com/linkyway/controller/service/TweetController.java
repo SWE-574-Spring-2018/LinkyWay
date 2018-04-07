@@ -1,24 +1,18 @@
-package com.linkyway.controller;
+package com.linkyway.controller.service;
 
-import com.linkyway.domain.RelationshipType;
 import com.linkyway.service.TweetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.social.twitter.api.*;
-import org.springframework.social.twitter.api.impl.TwitterTemplate;
-import org.springframework.social.twitter.connect.TwitterConnectionFactory;
+import org.springframework.social.twitter.api.Tweet;
+import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestOperations;
-import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Connection;
-import java.util.List;
 
 
 /**
@@ -37,7 +31,7 @@ public class TweetController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity searchTweet(@NotNull String url)
+    public ResponseEntity searchTweet(@NotNull String url, Model model)
             throws org.springframework.social.ApiException {
 
         Tweet searchResult = tweetService.searchTweets(url);
