@@ -24,14 +24,7 @@ public class TweetService {
         int index       = url.lastIndexOf("/");
         String sTweetId = url.substring(index + 1);
         Long tweetId = new Long(sTweetId);
-        //Long sinceId = tweetId - 1;
-        //Long maxId   = tweetId + 1;
 
-        //SearchParameters searchParameters = new SearchParameters("a");
-        //searchParameters.sinceId(sinceId);
-        //searchParameters.maxId(maxId);
-        //SearchResults searchResults = twitter.searchOperations().search(searchParameters);
-        //SearchResults searchResults =
          Tweet tweet = twitter.timelineOperations().getStatus(tweetId);//searchOperations().search(searchParameters);
         return tweet;
     }
