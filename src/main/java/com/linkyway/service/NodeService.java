@@ -2,14 +2,16 @@ package com.linkyway.service;
 
 import com.linkyway.mapper.NodeEntityMapper;
 import com.linkyway.model.entity.Node;
+import com.linkyway.model.entity.TweetNode;
 import com.linkyway.model.exception.NoMatchingNodeFoundException;
 import com.linkyway.model.exception.NodeAlreadyExistsException;
 import com.linkyway.repository.NodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.twitter.api.Tweet;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * @author huseyin.kilic
@@ -52,4 +54,29 @@ public class NodeService {
         nodeRepository.delete(id);
     }
 
+    /**
+     * @author acersoz
+     */
+
+    public com.linkyway.model.entity.TweetNode createTweetNode(com.linkyway.model.entity.TweetNode tweetNode)
+            throws NodeAlreadyExistsException {
+        //Node existingNode = nodeRepository.findByTypeAndName(node.getType(), node.getName());
+        if (tweetNode != null) {
+            //throw new NodeDoesNotExistException("1");
+        }
+
+        tweetNode.setNodeId(10);
+        tweetNode.setTweetId(5);
+
+        return tweetNode;
+
+
+
+        //Node entity = entityMapper.convert(node);
+        //return entityMapper.convert(nodeRepository.create(entity));
+    }
+
+    public List<Tweet> getConnectedTweets(Long nodeId) throws NoMatchingNodeFoundException {
+        return new ArrayList<>();
+    }
 }

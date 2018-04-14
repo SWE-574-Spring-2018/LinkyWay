@@ -31,7 +31,7 @@ public class TweetController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity searchTweet(@NotNull String url, Model model)
+    public ResponseEntity searchTweet(@NotNull String url)
             throws org.springframework.social.ApiException {
 
         Tweet searchResult = tweetService.searchTweets(url);

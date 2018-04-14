@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <div xmlns:th="http://www.thymeleaf.org" class="col-md-8" th:fragment="home">
     <div>
-        <p th:text="'Hello, ' + ${twitterdiv>ile.screenName} + '!'"/>
+        <p th:text="'Hello, ' + ${twitterProfile.screenName} + '!'"/>
     </div>
     <div th:each="node : ${nodes}">
         <p th:text="${node.name}"></p>
