@@ -1,52 +1,154 @@
 ﻿<!DOCTYPE html>
-<div xmlns:th="http://www.thymeleaf.org" class="col-md-8" th:fragment="annotation_create">
-    <script>
-        $(document).ready(function () {
-            var sourceElement = $("#d_source>*");
-            var annotateElement = $("#d_target");
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="annotation_create">
+    <script type="text/javascript">
+        var currentTweet;
 
-            sourceElement.click(function (e) {
-                e.preventDefault();
-            });
+        function handleError(err, clearTweetContent) {
+            if (clearTweetContent)
+                alterTweetContent("")
 
-            sourceElement.click(function (e) {
-                var clickedElement = $(e.target);
-                var innerText = clickedElement.text();
+            $("#d_alert_content").show().html(err.message);
+            $("html, body").animate({scrollTop: 0}, "slow");
+        }
 
-                annotateElement.empty();
-                if (clickedElement.is("img"))
-                    clickedElement.clone().appendTo(annotateElement);
-                else
-                    annotateElement.append(innerText);
-            });
+        function alterTweetContent(html) {
+            $("#d_alert_content").hide();
+            $("#d_source").html(html);
+        }
 
-            sourceElement.hover(function (e) {
-                    $(e.target).css({
-                        "outline": "1px solid black"
-                    });
+        function showLoadingContent() {
+            alterTweetContent("<img src='../img/tweet_loading.gif'/>");
+        }
+
+        function sendTweetRequest(tweetURL) {
+            var requestURL = "/linkyway/api/tweet?url=" + tweetURL;
+            $.ajax({
+                url: requestURL,
+                type: "GET",
+                dataType: "json",
+                success: function (json) {
+                    try {
+                        processTweetResult(json);
+                    } catch (e) {
+                        handleError(e, true);
+                    }
                 },
-                function (e) {
-                    $(e.target).css({
-                        "outline": "none"
-                    });
+                error: function () {
+                    handleError(new Error("Request error!"), true);
                 }
-            );
+            });
+        }
 
-            annotateElement.click(function (e) {
-                alert(window.getSelection().toString());
+        function processTweetResult(jsonTweet) {
+            currentTweet = jsonTweet;
+
+            var htmlContentText = "<p style='font-size: 40px; color: black;'>" + jsonTweet.text + "</p>";
+            var htmlContentImage = "";
+            jsonTweet.entities.media.forEach(function (e) {
+                var jsonElementMedia = JSON.parse(JSON.stringify(e));
+                if (jsonElementMedia.type === "photo")
+                    htmlContentImage += "<img width='50%' src='" + jsonElementMedia.mediaUrl + "'/>";
             });
 
-            function isEmpty(str) {
-                return (!str || 0 === str.length);
+            var htmlContentTweet = htmlContentText + htmlContentImage;
+            alterTweetContent(htmlContentTweet);
+        }
+
+        function submitAnnotation() {
+            var annotationText = $("#i_annotation_text").val();
+            if (annotationText.length === 0) {
+                handleError(new Error("Enter annotation text!"), false);
+                return;
             }
+
+            var annotationSelection = window.getSelection().toString();
+            var tweetText = currentTweet.text;
+            var contains = tweetText.includes(annotationSelection);
+            if (contains) {
+                var annotationType;
+
+                var startIndex = tweetText.indexOf(annotationSelection);
+                var endIndex = startIndex + annotationSelection.length;
+
+                if (startIndex === endIndex)
+                    annotationType = "all";
+                else
+                    annotationType = " text";
+
+                var annotation = {
+                    "id": currentTweet.id,
+                    "type": annotationType,
+                    "startIndex": startIndex,
+                    "endIndex": endIndex
+                }
+
+                var data = JSON.stringify(annotation);
+                alert(data);
+
+                var requestURL = "/linkyway/api/annotation/create";
+                $.ajax({
+                    url: requestURL,
+                    type: "POST",
+                    data: data,
+                    success: function (response) {
+                        try {
+                            alert(response);
+                        } catch (e) {
+                            handleError(e, true);
+                        }
+                    },
+                    error: function () {
+                        handleError(new Error("Request error!"), false);
+                    }
+                });
+            } else {
+                handleError(new Error("Selection invalid!"), false);
+            }
+        }
+
+        $(document).ready(function () {
+            $("#d_alert_content").hide();
+            $("#b_get_tweet").click(function (e) {
+                var tweetUrl = $("#i_tweet_url").val();
+                if (isEmpty(tweetUrl))
+                    handleError(new Error("Enter valid tweet URL!"), false);
+                else {
+                    showLoadingContent();
+                    sendTweetRequest(tweetUrl);
+                }
+            });
+
+            $("#b_submit_annotation").click(function (e) {
+                submitAnnotation();
+            });
         });
     </script>
 
-    <div id="d_source">
-        <h1>Annotations are the Best!</h1>
-        <p>I love annotating everything that comes my way. I am just like that! </p>
-        <img src="http://www.justpuppies.net/images/pom_triple_0815.jpg" alt="puppies"
-             style="width:500px;height:420px;">
+    <div class="row">
+        <div class="input-group">
+            <input id="i_tweet_url" type="text" class="form-control" placeholder="Enter Tweet url...">
+            <span class="input-group-btn">
+                    <button id="b_get_tweet" class="btn btn-default" type="button">Go!</button>
+            </span>
+        </div>
     </div>
-    <div id="d_target"></div>
+
+    <div style="margin-top: 10px">
+        <div id="d_alert_content" class="row alert alert-danger" role="alert"></div>
+
+        <div class="row">
+            <div id="d_source" class="center" style="min-height: 300px">
+                <img style="width: 100px" src="../../img/twitter_logo.png">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-group">
+                <input id="i_annotation_text" type="text" class="form-control" placeholder="Enter annotation text...">
+                <span class="input-group-btn">
+                    <button id="b_submit_annotation" class="btn btn-default" type="button">Submit Annotation</button>
+            </span>
+            </div>
+        </div>
+    </div>
 </div>
