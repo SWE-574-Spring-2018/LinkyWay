@@ -25,7 +25,7 @@ public class TweetService {
         String sTweetId = url.substring(index + 1);
         Long tweetId = new Long(sTweetId);
 
-         Tweet tweet = twitter.timelineOperations().getStatus(tweetId);//searchOperations().search(searchParameters);
+        Tweet tweet = twitter.timelineOperations().getStatus(tweetId);
         return tweet;
     }
 
