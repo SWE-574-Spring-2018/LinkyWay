@@ -94,7 +94,26 @@ public class NodeService {
         return tweetNode;
     }
 
-    public List<Tweet> getConnectedTweets(Long nodeId) throws NoMatchingNodeFoundException {
-        return new ArrayList<>();
+    public List<Tweet> getConnectedTweets(Long nodeId) throws NodeDoesNotExistException {
+
+        Node nodeCheck = nodeRepository.findById(nodeId);
+
+        if(nodeCheck == null) {
+            throw new NodeDoesNotExistException(nodeId);
+        }
+
+        List<TweetNode> tweetNodes = tweetNodeDao.findByNodeId(nodeId);
+
+        List<Tweet> tweets = null;
+
+        for (int i = 0; i < tweetNodes.size(); i++) {
+
+            TweetNode tweetNode = tweetNodes.get(i);
+            Long tweetId = tweetNode.getTweetId();
+            Tweet tweet = twitter.timelineOperations().getStatus(tweetId);
+            tweets.add(tweet);
+        }
+
+        return tweets;
     }
 }

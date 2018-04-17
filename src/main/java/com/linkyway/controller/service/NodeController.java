@@ -64,21 +64,7 @@ public class NodeController {
     /**
      * @author acersoz
      */
-    /*
-    *
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity createNode(@Valid @ModelAttribute Node node) {
-        if (node == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(node);
-        }
-        try {
-            Node newNode = nodeService.createNode(node);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newNode);
-        } catch (NodeAlreadyExistsException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-    }*/
+
     @RequestMapping(path = "/tweet", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity createTweetNode(@Valid @ModelAttribute TweetNode tweetNode) {
@@ -100,31 +86,15 @@ public class NodeController {
         }
     }
 
-    /*
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity createNode(@Valid @ModelAttribute Node node) {
-        if (node == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(node);
-        }
-        try {
-            Node newNode = nodeService.createNode(node);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newNode);
-        } catch (NodeAlreadyExistsException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-    }
-    */
 
-/*
     @RequestMapping(method = RequestMethod.GET, path = "/{nodeId}/tweets")
     @ResponseBody
     public ResponseEntity getConnectedTweets(@PathVariable("nodeId") Long nodeId) {
         try {
             List<Tweet> connectedTweets = nodeService.getConnectedTweets(nodeId);
             return ResponseEntity.status(HttpStatus.OK).body(connectedTweets);
-        } catch (NoMatchingNodeFoundException e) {
+        } catch (NodeDoesNotExistException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-    }*/
+    }
 }
