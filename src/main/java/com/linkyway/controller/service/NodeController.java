@@ -4,6 +4,8 @@ import com.linkyway.model.domain.Node;
 import com.linkyway.model.entity.TweetNode;
 import com.linkyway.model.exception.NoMatchingNodeFoundException;
 import com.linkyway.model.exception.NodeAlreadyExistsException;
+import com.linkyway.model.exception.NodeDoesNotExistException;
+import com.linkyway.model.exception.TweetDoesNotExistException;
 import com.linkyway.service.NodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,37 +65,36 @@ public class NodeController {
      * @author acersoz
      */
 
-    /*@RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(path = "/tweet", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity createTweetNode(@Valid @ModelAttribute int tweetNode) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(tweetNode);
-    }*/
-
-    /*
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity createNode(@Valid @ModelAttribute Node node) {
-        if (node == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(node);
+    public ResponseEntity createTweetNode(@Valid @ModelAttribute TweetNode tweetNode) {
+        if (tweetNode == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(tweetNode);
         }
+
         try {
-            Node newNode = nodeService.createNode(node);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newNode);
-        } catch (NodeAlreadyExistsException e) {
+            TweetNode newTweetNode = nodeService.createTweetNode(tweetNode);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newTweetNode);
+        }
+
+        catch (NodeDoesNotExistException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+
+        catch (TweetDoesNotExistException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
-    */
 
-/*
+
     @RequestMapping(method = RequestMethod.GET, path = "/{nodeId}/tweets")
     @ResponseBody
     public ResponseEntity getConnectedTweets(@PathVariable("nodeId") Long nodeId) {
         try {
             List<Tweet> connectedTweets = nodeService.getConnectedTweets(nodeId);
             return ResponseEntity.status(HttpStatus.OK).body(connectedTweets);
-        } catch (NoMatchingNodeFoundException e) {
+        } catch (NodeDoesNotExistException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-    }*/
+    }
 }
