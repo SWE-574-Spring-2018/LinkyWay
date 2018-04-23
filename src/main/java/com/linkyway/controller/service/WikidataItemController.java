@@ -24,14 +24,15 @@ public class WikidataItemController {
     @Autowired
     private WikidataItemService wikidataItemService;
 
+    @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity searchWikidataItem(@NotNull String keyword, @NotNull String language)
             throws MediaWikiApiErrorException {
 
-        List<WikidataItem> wikidataItemTypes = wikidataItemService.searchWikidataItems(keyword, language);
-        if (CollectionUtils.isEmpty(wikidataItemTypes)) {
+        List<WikidataItem> wikidataItems = wikidataItemService.searchWikidataItems(keyword, language);
+        if (CollectionUtils.isEmpty(wikidataItems)) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(wikidataItemTypes);
+        return ResponseEntity.status(HttpStatus.OK).body(wikidataItems);
     }
 }
