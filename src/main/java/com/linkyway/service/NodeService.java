@@ -104,7 +104,7 @@ public class NodeService {
 
         List<TweetNode> tweetNodes = tweetNodeDao.findByNodeId(nodeId);
 
-        List<Tweet> tweets = null;
+        List<Tweet> tweets = new ArrayList<>();
 
         for (int i = 0; i < tweetNodes.size(); i++) {
 
