@@ -1,4 +1,5 @@
 <!DOCTYPE html>
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="error_generic">
-    <div id="d_alert_content" class="row alert alert-danger" role="alert">Error generic</div>
+    <!--/*@thymesVar id="errorDescription" type="java.lang.String"*/-->
+    <div id="d_alert_content" class="row alert alert-danger" role="alert" th:utext="${errorDescription}"></div>
 </div>
