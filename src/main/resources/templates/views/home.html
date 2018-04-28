@@ -15,7 +15,10 @@
         <!--/*@thymesVar id="twitterProfile" type="org.springframework.social.twitter.api.TwitterProfile"*/-->
         <span th:text="'Hello, ' + ${twitterProfile.screenName} + ' !'"></span>
         <button id="b_create_node" class="btn btn-primary btn-s" type="button">Create a Node</button>
-        <div id="d_create_node"><input type="text" class="form-control" placeholder="Enter node name..."></div>
+        <div id="d_create_node">
+            <br>
+            <input type="text" class="form-control" placeholder="Enter node name...">
+        </div>
     </div>
 
     <div id="d_node_action" class="row alert alert-info">
