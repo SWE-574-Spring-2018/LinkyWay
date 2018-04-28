@@ -4,7 +4,7 @@
 <body>
 <div th:replace="fragments/menu :: menu"></div>
 <div class="container body-content">
-    <div th:replace="@{'views/' + ${content}} :: ${content}"></div>
+    <div th:replace="'views/' + ${content} :: ${content}" th:width="errorDescription=${errorDescription}"></div>
 </div>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>

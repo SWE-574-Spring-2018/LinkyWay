@@ -1,7 +1,7 @@
 package com.linkyway.model.exception;
 
 /**
- * @author huseyin.kilic
+ * @author acersoz
  */
 public class NodeDoesNotExistException extends Exception {
 

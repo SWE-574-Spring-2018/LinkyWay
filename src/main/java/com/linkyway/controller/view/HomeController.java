@@ -19,8 +19,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/home")
 public class HomeController extends BaseController {
+    private final NodeService nodeService;
+
     @Autowired
-    private NodeService nodeService;
+    public HomeController(NodeService nodeService) {
+        this.nodeService = nodeService;
+    }
 
     @RequestMapping
     public String homeView(Model model) {
