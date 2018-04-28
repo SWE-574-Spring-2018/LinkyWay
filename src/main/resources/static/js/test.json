@@ -1,46 +1,34 @@
 {
-  "nodes": [
+  "nodeList": [
     {
-      "name": "Peter",
-      "type": "Person",
-      "id": 1
+      "id": 41,
+      "name": "USA",
+      "type": "Country",
+      "description": "United States of America"
     },
     {
-      "name": "Michael",
-      "type": "Person",
-      "id": 2
+      "id": 0,
+      "name": "Donald Trump",
+      "type": "President",
+      "description": "US President"
     },
     {
-      "name": "Neo4j",
-      "type": "Database",
-      "id": 3
-    },
-    {
-      "name": "Graph Database",
-      "type": "Database",
-      "id": 4
+      "id": 20,
+      "name": "Stormy Daniels",
+      "type": "Celebrity",
+      "description": "Pornstar"
     }
   ],
-  "links": [
+  "linkList": [
     {
-      "source": 1,
-      "target": 2,
-      "type": "KNOWS"
+      "source": 0,
+      "target": 41,
+      "type": "x"
     },
     {
-      "source": 1,
-      "target": 3,
-      "type": "FOUNDED"
-    },
-    {
-      "source": 2,
-      "target": 3,
-      "type": "WORKS_ON"
-    },
-    {
-      "source": 3,
-      "target": 4,
-      "type": "IS_A"
+      "source": 0,
+      "target": 20,
+      "type": "x"
     }
   ]
 }

@@ -83,7 +83,7 @@
 
         d3.json("../js/test.json", function (error, graph) {
             if (error) throw error;
-            update(graph.links, graph.nodes);
+            update(graph.linkList, graph.nodeList);
         })
 
         function update(links, nodes) {
