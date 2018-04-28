@@ -17,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/")
 public class MasterController extends BaseController {
+    private final ConnectionRepository connectionRepository;
+
     @Autowired
-    private ConnectionRepository connectionRepository;
+    public MasterController(ConnectionRepository connectionRepository) {
+        this.connectionRepository = connectionRepository;
+    }
 
     @RequestMapping("/")
     public String masterView() {
