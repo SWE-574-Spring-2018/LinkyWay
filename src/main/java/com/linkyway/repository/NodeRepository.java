@@ -1,16 +1,16 @@
 package com.linkyway.repository;
 
 import com.linkyway.model.entity.Node;
+import com.linkyway.model.entity.Relationship;
 import org.neo4j.ogm.model.Result;
 import org.neo4j.ogm.response.model.NodeModel;
 import org.neo4j.ogm.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.twitter.api.Tweet;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.management.relation.Relation;
+import java.util.*;
 
 /**
  * @author huseyin.kilic
@@ -85,6 +85,53 @@ public class NodeRepository {
         foundNode.setDescription(String.valueOf(nodeModel.getPropertyList().get(1).getValue()));
         foundNode.setType(nodeModel.getLabels()[0]);
         return foundNode;
+    }
+
+    /**
+     * @author acersoz
+     */
+
+    public List<Relationship> findRelatedNodes(Long id) {
+        String query = "MATCH (sourceNode)-[r]->(targetNode) WHERE id(sourceNode)=" + id +
+                " RETURN sourceNode,type(r) as relationType,targetNode";
+        Iterable<Map<String, Object>> resultList = session.query(query, new HashMap<>()).queryResults();
+        if (!resultList.iterator().hasNext()) {
+            return null;
+        }
+
+        List<Relationship> relations = new ArrayList<>();
+        Iterator<Map<String, Object>> iterator = resultList.iterator();
+
+        while (iterator.hasNext()){
+
+            Map<String, Object> objectMap = iterator.next();
+
+            NodeModel sourceNodeModel = (NodeModel) objectMap.get("sourceNode");
+            NodeModel targetNodeModel = (NodeModel) objectMap.get("targetNode");
+            String relationType       = (String)    objectMap.get("relationType"); //"x";
+
+            Node sourceNode = new Node();
+            Node targetNode = new Node();
+
+            sourceNode.setId(sourceNodeModel.getId());
+            sourceNode.setName(String.valueOf(sourceNodeModel.getPropertyList().get(0).getValue()));
+            sourceNode.setDescription(String.valueOf(sourceNodeModel.getPropertyList().get(1).getValue()));
+            sourceNode.setType(sourceNodeModel.getLabels()[0]);
+
+            targetNode.setId(targetNodeModel.getId());
+            targetNode.setName(String.valueOf(targetNodeModel.getPropertyList().get(0).getValue()));
+            targetNode.setDescription(String.valueOf(targetNodeModel.getPropertyList().get(1).getValue()));
+            targetNode.setType(targetNodeModel.getLabels()[0]);
+
+            Relationship relationship = new Relationship();
+            relationship.setSource(sourceNode);
+            relationship.setTarget(targetNode);
+            relationship.setType(relationType);
+
+            relations.add(relationship);
+
+        }
+        return relations;
     }
 
 }
