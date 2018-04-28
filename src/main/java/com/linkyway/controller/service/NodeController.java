@@ -1,6 +1,8 @@
 package com.linkyway.controller.service;
 
 import com.linkyway.model.domain.Node;
+import com.linkyway.model.domain.RelationshipMap;
+import com.linkyway.model.entity.Relationship;
 import com.linkyway.model.entity.TweetNode;
 import com.linkyway.model.exception.NoMatchingNodeFoundException;
 import com.linkyway.model.exception.NodeAlreadyExistsException;
@@ -103,8 +105,10 @@ public class NodeController {
     @ResponseBody
     public ResponseEntity getConnectedNodes(@PathVariable("nodeId") Long nodeId) {
         try {
-            List<Tweet> connectedTweets = nodeService.getRelatedNodes(nodeId);
-            return ResponseEntity.status(HttpStatus.OK).body(connectedTweets);
+            //List<Relationship> connectedTweets = nodeService.getRelatedNodes(nodeId);
+            RelationshipMap relationshipMap = nodeService.getRelationshipMap(nodeId);
+            //return ResponseEntity.status(HttpStatus.OK).body(connectedTweets);
+            return ResponseEntity.status(HttpStatus.OK).body(relationshipMap);
         } catch (NodeDoesNotExistException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

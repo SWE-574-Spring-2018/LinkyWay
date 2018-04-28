@@ -1,7 +1,10 @@
 package com.linkyway.service;
 
 import com.linkyway.mapper.NodeEntityMapper;
+import com.linkyway.model.domain.Link;
+import com.linkyway.model.domain.RelationshipMap;
 import com.linkyway.model.entity.Node;
+import com.linkyway.model.entity.Relationship;
 import com.linkyway.model.entity.TweetNode;
 import com.linkyway.model.entity.User;
 import com.linkyway.model.exception.NoMatchingNodeFoundException;
@@ -75,14 +78,14 @@ public class NodeService {
 
         Node nodeCheck = nodeRepository.findById(tweetNode.getNodeId());
 
-        if(nodeCheck == null) {
+        if (nodeCheck == null) {
             throw new NodeDoesNotExistException(tweetNode.getNodeId());
         }
 
         Tweet tweet = twitter.timelineOperations().getStatus(tweetNode.getTweetId());
 
-        if(tweet == null){
-            throw new  TweetDoesNotExistException(tweetNode.getTweetId());
+        if (tweet == null) {
+            throw new TweetDoesNotExistException(tweetNode.getTweetId());
         }
 
         try {
@@ -98,7 +101,7 @@ public class NodeService {
 
         Node nodeCheck = nodeRepository.findById(nodeId);
 
-        if(nodeCheck == null) {
+        if (nodeCheck == null) {
             throw new NodeDoesNotExistException(nodeId);
         }
 
@@ -117,20 +120,90 @@ public class NodeService {
         return tweets;
     }
 
-    public List<Tweet> getRelatedNodes(Long nodeId) throws NodeDoesNotExistException {
+    public RelationshipMap getRelationshipMap(Long nodeId) throws NodeDoesNotExistException {
 
         Node nodeCheck = nodeRepository.findById(nodeId);
 
-        if(nodeCheck == null) {
+        if (nodeCheck == null) {
             throw new NodeDoesNotExistException(nodeId);
         }
 
-        String sTweetId = "989487373137432576";
-        Long tweetId = new Long(sTweetId);
-        Tweet tweet = twitter.timelineOperations().getStatus(tweetId);
+        List<Relationship> relationships = nodeRepository.findRelatedNodes(nodeId);
+        List<Node> nodeList = new ArrayList<>();
+        List<Link> linkList = new ArrayList<>();
 
-        List<Tweet> tweets = new ArrayList<>();
-        tweets.add(tweet);
-        return tweets;
+        for (int i = 0; i < relationships.size(); i++) {
+
+            Relationship relationship = relationships.get(i);
+
+            if (!nodeList.contains(relationship.getTarget())){
+                nodeList.add(relationship.getTarget());
+            }
+
+            if (!nodeList.contains(relationship.getSource())){
+                nodeList.add(relationship.getSource());
+            }
+
+            Link link = new Link();
+            link.setSource(relationship.getSource().getId());
+            link.setTarget(relationship.getTarget().getId());
+            link.setType(relationship.getType());
+            linkList.add(link);
+        }
+
+
+        RelationshipMap relationshipMap = new RelationshipMap();
+        relationshipMap.setLinkList(linkList);
+        relationshipMap.setNodeList(nodeList);
+
+
+
+        return relationshipMap;
     }
+/*
+    //salih
+    public RelationshipMap getRelationshipMap(long nodeId) throws NodeDoesNotExistException {
+        List<Relationship> relationshipList = getRelatedNodes(nodeId);
+
+        List<Node> nodeList = new ArrayList<>();
+        List<Link> linkList = new ArrayList<>();
+        for (Relationship relationship : relationshipList) {
+            Node sourceNode = relationship.getSource();
+            Node targetNode = relationship.getSource();
+
+            if (!nodeList.contains(sourceNode))
+                nodeList.add(sourceNode);
+
+            if (!nodeList.contains(targetNode))
+                nodeList.add(targetNode);
+
+            Link link = new Link(sourceNode.getId(), targetNode.getId(), relationship.getType());
+            linkList.add(link);
+        }
+        return new RelationshipMap(nodeList, linkList);
+    }
+
+    public class RelationshipMap {
+        private List<Node> nodeList;
+        private List<Link> linkList;
+
+        RelationshipMap(List<Node> nodeList, List<Link> linkList) {
+            this.nodeList = nodeList;
+            this.linkList = linkList;
+        }
+    }
+
+    private class Link {
+        private long source;
+        private long target;
+        private String type;
+
+        Link(long source, long target, String type) {
+            this.source = source;
+            this.target = target;
+            this.type = type;
+        }
+    }
+    */
+    //salih
 }
