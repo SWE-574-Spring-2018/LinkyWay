@@ -97,4 +97,16 @@ public class NodeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+
+    @RequestMapping(method = RequestMethod.GET, path = "/{nodeId}/related")
+    @ResponseBody
+    public ResponseEntity getConnectedNodes(@PathVariable("nodeId") Long nodeId) {
+        try {
+            List<Tweet> connectedTweets = nodeService.getRelatedNodes(nodeId);
+            return ResponseEntity.status(HttpStatus.OK).body(connectedTweets);
+        } catch (NodeDoesNotExistException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }

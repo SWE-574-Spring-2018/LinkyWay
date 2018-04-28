@@ -116,4 +116,21 @@ public class NodeService {
 
         return tweets;
     }
+
+    public List<Tweet> getRelatedNodes(Long nodeId) throws NodeDoesNotExistException {
+
+        Node nodeCheck = nodeRepository.findById(nodeId);
+
+        if(nodeCheck == null) {
+            throw new NodeDoesNotExistException(nodeId);
+        }
+
+        String sTweetId = "989487373137432576";
+        Long tweetId = new Long(sTweetId);
+        Tweet tweet = twitter.timelineOperations().getStatus(tweetId);
+
+        List<Tweet> tweets = new ArrayList<>();
+        tweets.add(tweet);
+        return tweets;
+    }
 }
