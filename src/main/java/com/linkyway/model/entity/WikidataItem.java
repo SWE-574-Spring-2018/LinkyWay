@@ -1,5 +1,8 @@
 package com.linkyway.model.entity;
 
+import lombok.Data;
+
+@Data
 public class WikidataItem {
 
     private String itemId;
