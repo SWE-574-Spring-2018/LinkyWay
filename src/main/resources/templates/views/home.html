@@ -81,10 +81,29 @@
             .force("charge", d3.forceManyBody())
             .force("center", d3.forceCenter(width / 2, height / 2));
 
-        d3.json("../js/test.json", function (error, graph) {
-            if (error) throw error;
-            update(graph.linkList, graph.nodeList);
-        })
+        initialize();
+
+        function initialize() {
+            var requestURL = "/linkyway/api/node/random";
+            $.ajax({
+                url: requestURL,
+                type: "GET",
+                dataType: "json",
+                success: function (node) {
+                    try {
+                        d3.json("/linkyway/api/node/" + node.id + "/related", function (error, graph) {
+                            if (error) throw error;
+                            update(graph.linkList, graph.nodeList);
+                        });
+                    } catch (e) {
+                        alert(e.toString());
+                    }
+                },
+                error: function (e) {
+                    alert(e.toString());
+                }
+            });
+        }
 
         function update(links, nodes) {
             link = svg.selectAll(".link")

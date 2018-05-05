@@ -121,89 +121,57 @@ public class NodeService {
     }
 
     public RelationshipMap getRelationshipMap(Long nodeId) throws NodeDoesNotExistException {
-
         Node nodeCheck = nodeRepository.findById(nodeId);
 
         if (nodeCheck == null) {
             throw new NodeDoesNotExistException(nodeId);
         }
-
         List<Relationship> relationships = nodeRepository.findRelatedNodes(nodeId);
         List<Node> nodeList = new ArrayList<>();
         List<Link> linkList = new ArrayList<>();
 
-        for (int i = 0; i < relationships.size(); i++) {
+        if (relationships != null) {
+            for (int i = 0; i < relationships.size(); i++) {
+                Relationship relationship = relationships.get(i);
+                if (!nodeList.contains(relationship.getTarget())) {
+                    nodeList.add(relationship.getTarget());
+                }
+                if (!nodeList.contains(relationship.getSource())) {
+                    nodeList.add(relationship.getSource());
+                }
 
-            Relationship relationship = relationships.get(i);
-
-            if (!nodeList.contains(relationship.getTarget())){
-                nodeList.add(relationship.getTarget());
+                Link link = new Link();
+                link.setSource(relationship.getSource().getId());
+                link.setTarget(relationship.getTarget().getId());
+                link.setType(relationship.getType());
+                linkList.add(link);
             }
-
-            if (!nodeList.contains(relationship.getSource())){
-                nodeList.add(relationship.getSource());
-            }
-
-            Link link = new Link();
-            link.setSource(relationship.getSource().getId());
-            link.setTarget(relationship.getTarget().getId());
-            link.setType(relationship.getType());
-            linkList.add(link);
         }
 
+        //If there is no relationship found link the node to itself.
+        if (nodeList.size() == 0)
+            nodeList.add(nodeCheck);
 
         RelationshipMap relationshipMap = new RelationshipMap();
         relationshipMap.setLinkList(linkList);
         relationshipMap.setNodeList(nodeList);
 
-
-
         return relationshipMap;
     }
-/*
-    //salih
-    public RelationshipMap getRelationshipMap(long nodeId) throws NodeDoesNotExistException {
-        List<Relationship> relationshipList = getRelatedNodes(nodeId);
 
-        List<Node> nodeList = new ArrayList<>();
-        List<Link> linkList = new ArrayList<>();
-        for (Relationship relationship : relationshipList) {
-            Node sourceNode = relationship.getSource();
-            Node targetNode = relationship.getSource();
+    public Node getRandomNode() {
+        Node randomNode = null;
 
-            if (!nodeList.contains(sourceNode))
-                nodeList.add(sourceNode);
-
-            if (!nodeList.contains(targetNode))
-                nodeList.add(targetNode);
-
-            Link link = new Link(sourceNode.getId(), targetNode.getId(), relationship.getType());
-            linkList.add(link);
+        List<Node> nodeList = nodeRepository.retrieveAll();
+        if (nodeList != null) {
+            int nodeSize = nodeList.size();
+            if (nodeSize == 1) {
+                randomNode = nodeList.get(0);
+            } else if (nodeSize > 1) {
+                int randomElementIndex = new Random().nextInt(nodeSize);
+                randomNode = nodeList.get(randomElementIndex);
+            }
         }
-        return new RelationshipMap(nodeList, linkList);
+        return randomNode;
     }
-
-    public class RelationshipMap {
-        private List<Node> nodeList;
-        private List<Link> linkList;
-
-        RelationshipMap(List<Node> nodeList, List<Link> linkList) {
-            this.nodeList = nodeList;
-            this.linkList = linkList;
-        }
-    }
-
-    private class Link {
-        private long source;
-        private long target;
-        private String type;
-
-        Link(long source, long target, String type) {
-            this.source = source;
-            this.target = target;
-            this.type = type;
-        }
-    }
-    */
-    //salih
 }

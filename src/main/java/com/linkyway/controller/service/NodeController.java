@@ -77,13 +77,9 @@ public class NodeController {
         try {
             TweetNode newTweetNode = nodeService.createTweetNode(tweetNode);
             return ResponseEntity.status(HttpStatus.CREATED).body(newTweetNode);
-        }
-
-        catch (NodeDoesNotExistException e) {
+        } catch (NodeDoesNotExistException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-
-        catch (TweetDoesNotExistException e) {
+        } catch (TweetDoesNotExistException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
@@ -112,5 +108,12 @@ public class NodeController {
         } catch (NodeDoesNotExistException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/random")
+    @ResponseBody
+    public ResponseEntity getRandomNode() {
+        com.linkyway.model.entity.Node randomNode = nodeService.getRandomNode();
+        return ResponseEntity.status(HttpStatus.OK).body(randomNode);
     }
 }
