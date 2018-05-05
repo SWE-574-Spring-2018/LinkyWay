@@ -40,13 +40,16 @@ public class CustomErrorController implements ErrorController {
 
     private String getErrorDescription(HttpServletRequest request) {
         String errorCode = String.valueOf(request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE));
-        String errorMessage = String.valueOf(request.getAttribute(RequestDispatcher.ERROR_MESSAGE));
 
-        if (TextUtils.isEmpty(errorMessage)) {
-            Exception exception = (Exception) (request.getAttribute(RequestDispatcher.ERROR_EXCEPTION));
-            errorMessage = exception.getMessage();
+        if (errorCode.equals("500")) {
+            return "An error occured :(";
+        } else {
+            String errorMessage = String.valueOf(request.getAttribute(RequestDispatcher.ERROR_MESSAGE));
+            if (TextUtils.isEmpty(errorMessage)) {
+                Exception exception = (Exception) (request.getAttribute(RequestDispatcher.ERROR_EXCEPTION));
+                errorMessage = exception.getMessage();
+            }
+            return "Error Code: " + errorCode + "</br>" + "Error Message: " + errorMessage;
         }
-
-        return "Error Code: " + errorCode + "</br>" + "Error Message: " + errorMessage;
     }
 }
