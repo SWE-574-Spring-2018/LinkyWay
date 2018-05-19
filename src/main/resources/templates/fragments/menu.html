@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="menu" class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
+    <div class="container" id="particles-js">
         <div id="logo_container">
             <div id="logo"></div>
             <div id="logo_extension">
@@ -37,4 +37,10 @@
             </ul>
         </div>
     </div>
+    <script type="application/javascript">
+        $(document).ready(function () {
+            particlesJS.load('particles-js', '/js/particles.json', function () {
+            });
+        });
+    </script>
 </div>

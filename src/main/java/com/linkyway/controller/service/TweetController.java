@@ -1,5 +1,7 @@
 package com.linkyway.controller.service;
 
+import com.linkyway.model.domain.Node;
+import com.linkyway.service.NodeService;
 import com.linkyway.service.TweetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +24,8 @@ import javax.validation.constraints.NotNull;
 @Controller
 @RequestMapping("/linkyway/api/tweet")
 public class TweetController {
-
+    @Autowired
+    private NodeService nodeService;
     @Autowired
     private TweetService tweetService;
 
@@ -33,6 +36,11 @@ public class TweetController {
     @ResponseBody
     public ResponseEntity searchTweet(@NotNull String url)
             throws org.springframework.social.ApiException {
+
+      //  boolean isTweetConnected = false;
+        //for (Node node : nodeService.getAllNodes()) {
+       //     if (node.)
+        //}
 
         Tweet searchResult = tweetService.searchTweets(url);
         return ResponseEntity.status(HttpStatus.OK).body(searchResult);

@@ -118,6 +118,14 @@ text {
     stroke-width: 1.5px;
 }
 
+.particles-js-canvas-el {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 #logo_container {
     display: flex;
     display: -webkit-flex; /* Safari */
