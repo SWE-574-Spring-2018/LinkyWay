@@ -121,6 +121,21 @@
             $("#b_submit_annotation").click(function (e) {
                 submitAnnotation();
             });
+
+            $.urlParam = function(name){
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                if (results==null){
+                    return null;
+                }
+                else{
+                    return decodeURI(results[1]) || 0;
+                }
+            };
+            var id = $.urlParam('id');
+            if(id != null){
+                $("#i_tweet_url").val(id);
+                $("#b_get_tweet").click();
+            }
         });
     </script>
 
