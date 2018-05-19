@@ -20,4 +20,6 @@ public class Node extends AbstractEntity {
     private String name;
     private String type;
     private String description;
+
 }
+
