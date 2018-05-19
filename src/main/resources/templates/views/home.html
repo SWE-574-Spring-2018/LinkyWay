@@ -17,7 +17,13 @@
         <button id="b_create_node" class="btn btn-primary btn-s" type="button">Create a Node</button>
         <div id="d_create_node">
             <br>
-            <input type="text" class="form-control" placeholder="Enter node name...">
+            <input id="i_node_name" type="text" class="form-control" placeholder="Enter node name...">
+            <br>
+            <input id="i_node_type" type="text" class="form-control" placeholder="Enter node type...">
+            <br>
+            <input id="i_node_description" type="text" class="form-control" placeholder="Enter node description...">
+            <br>
+            <button id="b_submit_node" class="btn btn-primary btn-s" type="button">Submit the Node</button>
         </div>
     </div>
 
@@ -25,10 +31,9 @@
         <span id="s_node_name"></span>
         <div class="row">
             <br>
-
             <div class="col-lg-6">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Enter tweet url...">
+                    <input id="i_tweet_url" type="text" class="form-control" placeholder="Enter tweet url...">
                     <span class="input-group-btn">
                         <button id="b_connect_tweet" class="btn btn-default" type="button">Connect a tweet!</button>
                     </span>
@@ -36,13 +41,21 @@
             </div>
             <div class="col-lg-6">
                 <div class="input-group">
-                    <select class="form-control">
+                    <select id="s_node" class="form-control">
                         <option th:each="node : ${nodes}" th:value="${node.id}" th:text="${node.name}"></option>
                     </select>
                     <span class="input-group-btn">
                         <button id="b_connect_node" class="btn btn-default" type="button">Connect to the node!</button>
                     </span>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6"></div>
+            <div class="col-lg-6">
+                <input type="text" placeholder="Search relationship type..." class="form-control" id="i_search_relation"
+                       onkeyup="searchrelations()">
+                <div id="d_types" class="alert alert-warning"></div>
             </div>
         </div>
     </div>
@@ -327,8 +340,175 @@
             $("#d_node_action").show("slow");
             $("#s_node_name").html(d.name);
             $("#b_connect_tweet").click({d: d}, function () {
-                alert(d.name);
+                connecttweet(d);
             });
+            $("#b_connect_node").click({d: d}, function () {
+                connectnode(d);
+            });
+        }
+
+        function createnode() {
+            var name = $("#i_node_name").val();
+            var type = $("#i_node_type").val();
+            var description = $("#i_node_description").val();
+
+            if (name.length === 0 || type.length === 0 || description.length === 0) {
+                alert("Enter all required variables!");
+                return;
+            }
+
+            var data = new FormData();
+            data.append("name", name);
+            data.append("type", type);
+            data.append("description", description);
+
+            var requestURL = "/linkyway/api/node/";
+            $.ajax({
+                url: requestURL,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    try {
+                        alert("Node '" + name + "' is created successfully.");
+                        location.reload();
+                    } catch (e) {
+                        alert(e.toString());
+                    }
+                },
+                error: function () {
+                    alert("Request error!");
+                }
+            });
+        }
+
+        function connecttweet(d) {
+            var tweetUrl = $("#i_tweet_url").val();
+            if (tweetUrl.length === 0) {
+                alert("Enter Tweet URL!");
+                return;
+            }
+
+            var nodeId = d.id;
+            var index = tweetUrl.lastIndexOf("/");
+            var tweetId = tweetUrl.substring(index + 1);
+
+            var data = new FormData();
+            data.append("tweetId", tweetId);
+            data.append("nodeId", nodeId);
+
+            var requestURL = "/linkyway/api/node/tweet";
+            $.ajax({
+                url: requestURL,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    try {
+                        var nodeName = d.name;
+                        alert("The tweet with id '" + tweetId + "' is connected with the node '" + nodeName + "'");
+                        location.reload();
+                    } catch (e) {
+                        alert(e.toString());
+                    }
+                },
+                error: function () {
+                    alert("Request error!");
+                }
+            });
+        }
+
+        function connectnode(d) {
+            var sourceNodeId = d.id;
+            var targetNodeId = $("#s_node").val();
+            var relationshipType = $('input[name=i_relation_type]:checked').val();
+
+            if (relationshipType == null) {
+                alert("Select relationship type!");
+                return;
+            }
+
+            var data = new FormData();
+            data.append("sourceNodeId", sourceNodeId);
+            data.append("targetNodeId", targetNodeId);
+            data.append("relationshipType", relationshipType);
+
+            var requestURL = "/linkyway/api/relation";
+            $.ajax({
+                url: requestURL,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    try {
+                        var sourceNodeName = d.name;
+                        var targetNodeName = $("#s_node option:selected").text();
+                        alert("The node '" + sourceNodeName + "' is connected with the node '" + targetNodeName + "'");
+                        location.reload();
+                    } catch (e) {
+                        alert(e.toString());
+                    }
+                },
+                error: function () {
+                    alert("Request error!");
+                }
+            });
+        }
+
+        function searchrelations() {
+            $('#d_types').empty();
+
+            var language = "en";
+            var keyword = $("#i_search_relation").val();
+
+            var data = new FormData();
+            data.append("language", language);
+            data.append("keyword", keyword);
+
+            var requestURL = "/linkyway/api/relation/search";
+            $.ajax({
+                url: requestURL,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    $('#d_types').empty();
+                    for (i = 0; i < response.length; i++) {
+                        var type = response[i];
+                        var name = type.name;
+                        var code = type.code;
+                        var radiobutton = $('<input type="radio" name="i_relation_type" value="' + code + '">' + name + '</><br/>');
+                        radiobutton.appendTo('#d_types');
+                    }
+                },
+                error: function () {
+                    alert("Request error!");
+                }
+            });
+
+
+            // Declare variables
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
         }
 
         $("#d_node_action").hide();
@@ -337,5 +517,13 @@
             $("#d_create_node").show("slow");
         });
         $("#d_create_node").hide();
+
+        $("#b_submit_node").click(function () {
+            createnode()
+        });
+
+        $("#b_submit_node").click(function () {
+            createnode()
+        });
     </script>
 </div>

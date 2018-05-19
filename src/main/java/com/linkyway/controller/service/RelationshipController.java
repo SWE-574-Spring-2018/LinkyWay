@@ -27,7 +27,7 @@ public class RelationshipController {
     @Autowired
     private RelationshipService relationshipService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(path = "/search", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity searchRelationshipTypes(@NotNull String keyword, @NotNull String language)
             throws MediaWikiApiErrorException {
