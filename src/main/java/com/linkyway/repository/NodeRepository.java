@@ -92,10 +92,9 @@ public class NodeRepository {
      */
 
     public List<Relationship> findRelatedNodes(Long id) {
-        String query = "MATCH (sourceNode)-[r]->(targetNode)  WHERE id(sourceNode)=" + id +
-                "RETURN sourceNode,type(r) as relationType, targetNode " +
-                " UNION ALL MATCH  (sourceNode)-[r]->(targetNode), (targetNode)-[r2]->(targetNode2) WHERE id(sourceNode)=" + id +
-                "RETURN targetNode as sourceNode, type(r2) as relationType,targetNode2 as targetNode";
+        String query = "MATCH (sourceNode)-[r]-(targetNode)  WHERE id(sourceNode)=" + id +
+                " RETURN sourceNode,type(r) as relationType, targetNode  UNION ALL MATCH  (sourceNode)-[r]-(targetNode), (targetNode)-[r2]-(targetNode2)  " +
+                "WHERE id(sourceNode)=" + id + "AND id(targetNode2) <> id(sourceNode)  RETURN targetNode as sourceNode, type(r2) as relationType,targetNode2 as targetNode";
         Iterable<Map<String, Object>> resultList = session.query(query, new HashMap<>()).queryResults();
         if (!resultList.iterator().hasNext()) {
             return null;
