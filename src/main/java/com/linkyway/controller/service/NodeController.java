@@ -116,4 +116,10 @@ public class NodeController {
         com.linkyway.model.entity.Node randomNode = nodeService.getRandomNode();
         return ResponseEntity.status(HttpStatus.OK).body(randomNode);
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/testdb")
+    @ResponseBody
+    public void CreateTestDB() {
+        nodeService.CreateTestDB();
+    }
 }

@@ -135,4 +135,23 @@ public class NodeRepository {
         return relations;
     }
 
+    public void CreateTestDB() {
+        String query1 = "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r";
+        session.query(query1, new HashMap<>());
+        String query2 = "CREATE (n1:Person { Name: \"Donald Trump\", Description: \"US President\" }) \n" +
+                "CREATE (n2:Person { Name: \"Stormy Daniels\", Description: \"Pornstar\" })\n" +
+                "CREATE (n3:Person { Name: \"Michael Cohen\", Description: \"Lawyer of Donald Trump\" })\n" +
+                "CREATE (n4:Cooperation { Name: \"Facebook Inc\", Description: \"Social Media Behemoth\" })\n" +
+                "CREATE (n5:Event { Name: \"United States Presidential Election, 2016\", Description: \" \" })\n" +
+                "CREATE (n6:Event { Name: \"Facebook-Cambridge Analytica Data Scandal\", Description: \" \" })\n" +
+                "CREATE (n7:Person { Name: \"Mark Zuckerberg\", Description: \"CEO and founder of Facebook Inc.\" })\n" +
+                "CREATE (n8:Organization { Name: \"Republicans\", Description: \"Political Party in US\" })";
+        session.query(query2, new HashMap<>());
+        String query3 = "MATCH (n1), (n2), (n3), (n4), (n5), (n6), (n7), (n8) WHERE n1.Name = \"Donald Trump\" AND n2.Name = \"Stormy Daniels\" \n" +
+                "AND n3.Name = \"Michael Cohen\" AND n4.Name = \"Facebook Inc\" AND n5.Name = \"United States Presidential Election, 2016\" \n" +
+                "AND  n6.Name = \"Facebook-Cambridge Analytica Data Scandal\" AND n7.Name = \"Mark Zuckerberg\" AND n8.Name = \"Republicans\"\n" +
+                "CREATE (n4)-[r1:FOUNDED_BY]->(n7), (n1)-[r2:ELECTED_IN]->(n5), (n3)-[r3:REPRESENTS]->(n1), (n3)-[r4:BLACKMAILED]->(n2), (n1)-[r5:HAD_AFFAIR_WITH]->(n2), (n4)-[r6:PART_OF]->(n6)\n" +
+                ", (n1)-[r7:WINNER]->(n5), (n3)-[r8:MEMBER_OF_POLITICAL_PARTY]->(n8), (n1)-[r9:MEMBER_OF_POLITICAL_PARTY]->(n8), (n6)-[r10:HAS_PART]->(n5)";
+        session.query(query3, new HashMap<>());
+    }
 }
