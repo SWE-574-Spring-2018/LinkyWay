@@ -169,4 +169,10 @@ public class NodeService {
         }
         return randomNode;
     }
+
+    public void CreateTestDB() {
+
+        nodeRepository.CreateTestDB();
+
+    }
 }
