@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author huseyin.kilic
@@ -98,26 +99,20 @@ public class NodeService {
     }
 
     public List<Tweet> getConnectedTweets(Long nodeId) throws NodeDoesNotExistException {
-
         Node nodeCheck = nodeRepository.findById(nodeId);
-
         if (nodeCheck == null) {
             throw new NodeDoesNotExistException(nodeId);
         }
 
-        List<TweetNode> tweetNodes = tweetNodeDao.findByNodeId(nodeId);
-
         List<Tweet> tweets = new ArrayList<>();
-
+        List<TweetNode> tweetNodes = tweetNodeDao.findByNodeId(nodeId);
         for (int i = 0; i < tweetNodes.size(); i++) {
-
             TweetNode tweetNode = tweetNodes.get(i);
             Long tweetId = tweetNode.getTweetId();
             Tweet tweet = twitter.timelineOperations().getStatus(tweetId);
             tweets.add(tweet);
         }
-
-        return tweets;
+        return tweets.stream().distinct().collect(Collectors.toList());
     }
 
     public RelationshipMap getRelationshipMap(Long nodeId) throws NodeDoesNotExistException {

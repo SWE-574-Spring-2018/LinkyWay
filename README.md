@@ -19,7 +19,3 @@ The project team consists of:
 + Hüseyin Kılıç
 + Ahmet Can Ersöz
 + Salih Demir
-
-### Primary Features:
-+ Feature 1
-+ Feature 2

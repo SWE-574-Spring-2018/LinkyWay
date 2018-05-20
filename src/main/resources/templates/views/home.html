@@ -485,12 +485,14 @@
         function connectnode(d) {
             var sourceNodeId = d.id;
             var targetNodeId = $("#s_node").val();
-            var relationshipType = $('input[name=i_relation_type]:checked').val();
+            var relationshipOption = $('input[name=i_relation_type]:checked');
 
-            if (relationshipType == null) {
+            if (relationshipOption.val() == null) {
                 alert("Select relationship type!");
                 return;
             }
+
+            var relationshipType = $("label[for='"+relationshipOption.val()+"']").text();
 
             var data = new FormData();
             data.append("sourceNodeId", sourceNodeId);
@@ -526,6 +528,9 @@
             var language = "en";
             var keyword = $("#i_search_relation").val();
 
+            if (keyword.length === 0)
+                return;
+
             var data = new FormData();
             data.append("language", language);
             data.append("keyword", keyword);
@@ -539,13 +544,16 @@
                 data: data,
                 success: function (response) {
                     $('#d_types').empty();
-                    for (i = 0; i < response.length; i++) {
-                        var type = response[i];
-                        var name = type.name;
-                        var code = type.code;
-                        var radiobutton = $('<input type="radio" name="i_relation_type" value="' + code + '">' + name + '</><br/>');
-                        radiobutton.appendTo('#d_types');
-                    }
+
+                    if (undefined !== response && response.length)
+                        for (i = 0; i < response.length; i++) {
+                            var type = response[i];
+                            var name = type.name;
+                            var code = type.code;
+
+                            var radiobutton = $('<input type="radio" name="i_relation_type" value="' + code + '" id="'+ code + '"/><label for="'+ code + '">' + name + '</label><br/>');
+                            radiobutton.appendTo('#d_types');
+                        }
                 },
                 error: function () {
                     alert("Request error!");
