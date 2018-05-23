@@ -37,8 +37,8 @@ public class AnnotationTextController{
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity getAnnotation(@NotNull String id) {
+	@RequestMapping(method = RequestMethod.GET, path = "/{id}")
+	public ResponseEntity getAnnotation(@NotNull @PathVariable String id) {
 		try {
 			final HttpRequestResult<AnnotationText> httpRequestResult = annotationService.getAnnotation(id);
 			if (httpRequestResult.getHttpStatusCode() == 200) {
