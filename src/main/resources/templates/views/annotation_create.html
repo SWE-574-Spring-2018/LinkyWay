@@ -55,6 +55,7 @@
         }
 
         function submitAnnotation() {
+            var tweetURL=$("#i_tweet_url").val();
             var annotationText = $("#i_annotation_text").val();
             if (annotationText.length === 0) {
                 handleError(new Error("Enter annotation text!"), false);
@@ -73,21 +74,25 @@
                 if (startIndex === endIndex)
                     annotationType = "all";
                 else
-                    annotationType = " text";
+                    annotationType = "text";
 
                 var annotation = {
-                    "id": currentTweet.id,
+                    "tweetId": currentTweet.id.toString(),
+                    "tweetUrl": tweetURL,
+                    "tweetText":tweetText,
                     "type": annotationType,
                     "startIndex": startIndex,
-                    "endIndex": endIndex
+                    "endIndex": endIndex,
+                    "comment":annotationText
                 }
 
                 var data = JSON.stringify(annotation);
                 alert(data);
 
-                var requestURL = "/linkyway/api/annotation/create";
+                var requestURL = "/linkyway/api/annotationtext";
                 $.ajax({
                     url: requestURL,
+                    contentType: "application/json",
                     type: "POST",
                     data: data,
                     success: function (response) {
