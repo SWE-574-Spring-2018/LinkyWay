@@ -6,13 +6,11 @@ import com.linkyway.model.domain.RelationshipMap;
 import com.linkyway.model.entity.Node;
 import com.linkyway.model.entity.Relationship;
 import com.linkyway.model.entity.TweetNode;
-import com.linkyway.model.entity.User;
 import com.linkyway.model.exception.NoMatchingNodeFoundException;
 import com.linkyway.model.exception.NodeAlreadyExistsException;
 import com.linkyway.model.exception.NodeDoesNotExistException;
 import com.linkyway.model.exception.TweetDoesNotExistException;
 import com.linkyway.repository.NodeRepository;
-import com.linkyway.repository.dao.ProfileDao;
 import com.linkyway.repository.dao.TweetNodeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.twitter.api.Tweet;
@@ -20,7 +18,9 @@ import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -53,7 +53,10 @@ public class NodeService {
 
     public List<com.linkyway.model.domain.Node> getAllNodes() {
         List<Node> nodes = nodeRepository.retrieveAll();
-        return entityMapper.convert(nodes);
+        if (nodes == null)
+            return new ArrayList<>();
+        else
+            return entityMapper.convert(nodes);
     }
 
     public com.linkyway.model.domain.Node createNode(com.linkyway.model.domain.Node node) throws NodeAlreadyExistsException {

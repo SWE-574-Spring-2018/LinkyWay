@@ -2,7 +2,6 @@ package com.linkyway.controller.service;
 
 import com.linkyway.model.domain.Node;
 import com.linkyway.model.domain.RelationshipMap;
-import com.linkyway.model.entity.Relationship;
 import com.linkyway.model.entity.TweetNode;
 import com.linkyway.model.exception.NoMatchingNodeFoundException;
 import com.linkyway.model.exception.NodeAlreadyExistsException;
@@ -18,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author huseyin.kilic
@@ -115,6 +116,20 @@ public class NodeController {
     public ResponseEntity getRandomNode() {
         com.linkyway.model.entity.Node randomNode = nodeService.getRandomNode();
         return ResponseEntity.status(HttpStatus.OK).body(randomNode);
+    }
+
+    @RequestMapping(path = "/search", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity searchNodes(@NotNull String keyword) {
+        List<Node> nodes = nodeService.getAllNodes()
+                .stream()
+                .filter(n -> n.getName().toLowerCase().contains(keyword.toLowerCase()))
+                .collect(Collectors.toList());
+
+        if (nodes == null)
+            nodes = new ArrayList<>();
+
+        return ResponseEntity.status(HttpStatus.OK).body(nodes);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/testdb")

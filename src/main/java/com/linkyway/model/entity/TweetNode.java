@@ -1,11 +1,11 @@
 package com.linkyway.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * @author acersoz
@@ -21,4 +21,16 @@ public class TweetNode extends AbstractEntity {
 
     private long tweetId;
     private long nodeId;
+
+    public Long getId() {
+        return id;
+    }
+
+    public long getTweetId() {
+        return tweetId;
+    }
+
+    public long getNodeId() {
+        return nodeId;
+    }
 }
