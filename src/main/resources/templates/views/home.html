@@ -76,9 +76,21 @@
         </div>
     </div>
 
+    <div class="row">
+        <input type="text" placeholder="Search a node" class="form-control" id="i_search_node"
+               onkeyup="searchnodes()">
+        <div class="alert alert-warning">
+            Nodes
+            <div id="d_nodes"></div>
+        </div>
+    </div>
+
     <svg class="center-block" width="1024" height="400"></svg>
     <div style="display: flow-root; margin-bottom: 15px;">
         <button id="b_create_node" class="btn btn-primary btn-s" type="button" style="float: right;">Create a Node
+        </button>
+        <button id="b_reset_nodes" class="btn btn-primary btn-s" type="button"
+                style="float: right; margin-right: 10px;">Reset Node Graph
         </button>
     </div>
 
@@ -128,19 +140,28 @@
                 type: "GET",
                 dataType: "json",
                 success: function (node) {
-                    try {
-                        d3.json("/linkyway/api/node/" + node.id + "/related", function (error, graph) {
-                            if (error) throw error;
-                            update(graph.linkList, graph.nodeList);
-                        });
-                    } catch (e) {
-                        alert(e.toString());
-                    }
+                    buildnode(node);
                 },
                 error: function (e) {
                     alert(e.toString());
                 }
             });
+        }
+
+        function buildnode(node) {
+            try {
+                d3.selectAll("svg > *").remove();
+                d3.json("/linkyway/api/node/" + node.id + "/related", function (error, graph) {
+                    if (error) throw error;
+                    update(graph.linkList, graph.nodeList);
+                });
+                $("#b_reset_nodes").unbind("click");
+                $("#b_reset_nodes").click(function () {
+                    buildnode(node);
+                });
+            } catch (e) {
+                alert(e.toString());
+            }
         }
 
         function update(links, nodes) {
@@ -403,8 +424,15 @@
                         alert(e.toString());
                     }
                 },
-                error: function () {
-                    alert("Request error!");
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Request error!');
+
+                    console.log('jqXHR:');
+                    console.log(jqXHR);
+                    console.log('textStatus:');
+                    console.log(textStatus);
+                    console.log('errorThrown:');
+                    console.log(errorThrown);
                 }
             });
         }
@@ -439,8 +467,15 @@
                         alert(e.toString());
                     }
                 },
-                error: function () {
-                    alert("Request error!");
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Request error!');
+
+                    console.log('jqXHR:');
+                    console.log(jqXHR);
+                    console.log('textStatus:');
+                    console.log(textStatus);
+                    console.log('errorThrown:');
+                    console.log(errorThrown);
                 }
             });
         }
@@ -476,8 +511,15 @@
                         alert(e.toString());
                     }
                 },
-                error: function () {
-                    alert("Request error!");
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Request error!');
+
+                    console.log('jqXHR:');
+                    console.log(jqXHR);
+                    console.log('textStatus:');
+                    console.log(textStatus);
+                    console.log('errorThrown:');
+                    console.log(errorThrown);
                 }
             });
         }
@@ -492,7 +534,7 @@
                 return;
             }
 
-            var relationshipType = $("label[for='"+relationshipOption.val()+"']").text();
+            var relationshipType = $("label[for='" + relationshipOption.val() + "']").text();
 
             var data = new FormData();
             data.append("sourceNodeId", sourceNodeId);
@@ -516,8 +558,72 @@
                         alert(e.toString());
                     }
                 },
-                error: function () {
-                    alert("Request error!");
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Request error!');
+
+                    console.log('jqXHR:');
+                    console.log(jqXHR);
+                    console.log('textStatus:');
+                    console.log(textStatus);
+                    console.log('errorThrown:');
+                    console.log(errorThrown);
+                }
+            });
+        }
+
+        function searchnodes() {
+            $('#d_nodes').empty();
+
+            var keyword = $("#i_search_node").val();
+            if (keyword.length === 0)
+                return;
+
+            var data = new FormData();
+            data.append("keyword", keyword);
+
+            var requestURL = "/linkyway/api/node/search";
+            $.ajax({
+                url: requestURL,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    $('#d_types').empty();
+
+                    if (undefined !== response && response.length)
+                        for (i = 0; i < response.length; i++) {
+                            var node = response[i];
+                            var id = node.id;
+                            var name = node.name;
+
+                            var radiobutton = $('<input type="radio" name="i_node" value="node_' + id + '" id="node_' + id + '"/><label for="node_' + id + '">' + name + '</label><br/>');
+                            radiobutton.appendTo('#d_nodes');
+                        }
+
+                    $('input[type=radio][name=i_node]').change(function () {
+                        var val = $('input[name=i_node]:checked').val();
+                        for (i = 0; i < response.length; i++) {
+                            var node = response[i];
+                            var id = node.id;
+                            var name = node.name;
+
+                            if (("node_".concat(node.id)) === val) {
+                                buildnode(node);
+                                break;
+                            }
+                        }
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Request error!');
+
+                    console.log('jqXHR:');
+                    console.log(jqXHR);
+                    console.log('textStatus:');
+                    console.log(textStatus);
+                    console.log('errorThrown:');
+                    console.log(errorThrown);
                 }
             });
         }
@@ -551,12 +657,19 @@
                             var name = type.name;
                             var code = type.code;
 
-                            var radiobutton = $('<input type="radio" name="i_relation_type" value="' + code + '" id="'+ code + '"/><label for="'+ code + '">' + name + '</label><br/>');
+                            var radiobutton = $('<input type="radio" name="i_relation_type" value="' + code + '" id="' + code + '"/><label for="' + code + '">' + name + '</label><br/>');
                             radiobutton.appendTo('#d_types');
                         }
                 },
-                error: function () {
-                    alert("Request error!");
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Request error!');
+
+                    console.log('jqXHR:');
+                    console.log(jqXHR);
+                    console.log('textStatus:');
+                    console.log(textStatus);
+                    console.log('errorThrown:');
+                    console.log(errorThrown);
                 }
             });
         }

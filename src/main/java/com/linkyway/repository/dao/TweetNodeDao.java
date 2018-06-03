@@ -4,7 +4,6 @@
 package com.linkyway.repository.dao;
 
 import com.linkyway.model.entity.TweetNode;
-import com.linkyway.model.entity.User;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;

@@ -1,8 +1,6 @@
 package com.linkyway.controller.service;
 
-import com.linkyway.model.domain.RelationshipType;
 import com.linkyway.model.entity.WikidataItem;
-import com.linkyway.service.RelationshipService;
 import com.linkyway.service.WikidataItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

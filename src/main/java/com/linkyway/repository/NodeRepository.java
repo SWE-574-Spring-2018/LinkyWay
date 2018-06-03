@@ -6,10 +6,8 @@ import org.neo4j.ogm.model.Result;
 import org.neo4j.ogm.response.model.NodeModel;
 import org.neo4j.ogm.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.social.twitter.api.Tweet;
 import org.springframework.stereotype.Repository;
 
-import javax.management.relation.Relation;
 import java.util.*;
 
 /**
